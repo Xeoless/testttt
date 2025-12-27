@@ -1,56 +1,197 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scripts - MrAwo69</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
-</head>
-<body>
-    <header id="header">
-        <div class="logo">MrAwo69</div>
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="scripts.html">Scripts</a>
-            <a href="about.html">About</a>
-            <a href="https://www.youtube.com/@MrAwo69" target="_blank">YouTube</a>
-        </nav>
-    </header>
+:root {
+    --primary-red: #e50914;
+    --dark-bg: #111;
+    --light-text: #f5f5f5;
+    --gray: #222;
+}
 
-    <section class="page-hero">
-        <h1>All Roblox Scripts</h1>
-        <p>Free scripts from my videos. Copy-paste and use in your games! New ones added regularly.</p>
-    </section>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-    <section class="scripts-grid">
-        <!-- Add a new card for each script/video -->
-        <div class="script-card">
-            <h3>Script Title 1 (e.g., Clicking Simulator)</h3>
-            <div class="video-wrapper">
-                <iframe src="https://www.youtube.com/embed/VIDEO_ID_HERE" allowfullscreen></iframe>
-            </div>
-            <p>Short description from your video...</p>
-            <pre><code>-- Your full script code here
-print("Hello from MrAwo69!")</code></pre>
-            <button onclick="navigator.clipboard.writeText(this.previousElementSibling.querySelector('code').innerText)">Copy Script</button>
-        </div>
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--dark-bg);
+    color: var(--light-text);
+    line-height: 1.6;
+}
 
-        <div class="script-card">
-            <h3>Script Title 2 (e.g., Glove System)</h3>
-            <div class="video-wrapper">
-                <iframe src="https://www.youtube.com/embed/VIDEO_ID_HERE" allowfullscreen></iframe>
-            </div>
-            <p>Description...</p>
-            <pre><code>-- Paste script here</code></pre>
-            <button onclick="navigator.clipboard.writeText(this.previousElementSibling.querySelector('code').innerText)">Copy Script</button>
-        </div>
+header {
+    background: linear-gradient(to bottom, rgba(17,17,17,0.9), transparent);
+    position: fixed;
+    width: 100%;
+    z-index: 100;
+    padding: 20px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.3s;
+}
 
-        <!-- Add more cards as you upload new videos/scripts -->
-    </section>
+header.scrolled {
+    background: var(--dark-bg);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
 
-    <footer>
-        <p>© 2025 MrAwo69. All rights reserved.</p>
-    </footer>
-</body>
-</html>
+.logo {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--primary-red);
+}
+
+nav a {
+    color: var(--light-text);
+    text-decoration: none;
+    margin-left: 30px;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: var(--primary-red);
+}
+
+.hero {
+    height: 100vh;
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('hero-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 5%;
+}
+
+.hero h1 {
+    font-size: 4.5rem;
+    margin-bottom: 20px;
+    color: var(--primary-red);
+    text-shadow: 0 4px 15px rgba(0,0,0,0.8);
+}
+
+.hero p {
+    font-size: 1.6rem;
+    max-width: 900px;
+    margin-bottom: 40px;
+}
+
+.btn {
+    background: var(--primary-red);
+    color: white;
+    padding: 16px 44px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.3rem;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s;
+    margin: 10px;
+}
+
+.btn:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 25px rgba(229,9,20,0.7);
+}
+
+.subscribe { background: #ff0000; }
+
+.big-subscribe {
+    font-size: 2rem;
+    padding: 25px 70px;
+}
+
+.page-hero {
+    padding: 150px 5% 80px;
+    text-align: center;
+    background: var(--gray);
+}
+
+.page-hero h1 {
+    font-size: 3.5rem;
+    color: var(--primary-red);
+}
+
+.scripts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 40px;
+    padding: 60px 5%;
+}
+
+.script-card {
+    background: var(--gray);
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+}
+
+.script-card h3 {
+    color: var(--primary-red);
+    margin-bottom: 15px;
+}
+
+.video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.script-card pre {
+    background: #000;
+    padding: 15px;
+    border-radius: 8px;
+    overflow-x: auto;
+    color: #0f0;
+    margin: 20px 0;
+}
+
+.copy-btn {
+    background: var(--primary-red);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+.about-hero {
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('hero-bg.jpg');
+    background-size: cover;
+}
+
+.about-content {
+    padding: 80px 5%;
+    text-align: center;
+    background: var(--gray);
+}
+
+footer {
+    background: #000;
+    padding: 40px 5%;
+    text-align: center;
+}
+
+footer a {
+    color: var(--primary-red);
+}
+
+@media (max-width: 768px) {
+    .hero h1 { font-size: 3.5rem; }
+    nav a { margin-left: 15px; font-size: 0.9rem; }
+}
