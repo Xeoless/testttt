@@ -25,14 +25,6 @@
         <a href="https://www.youtube.com/@MrAwo69/subscribe" target="_blank" class="btn big-subscribe">Subscribe Now!</a>
     </section>
 
-    <!-- Smartlink -->
-    <div style="text-align:center; margin:40px 0;">
-        <a href="https://www.effectivegatecpm.com/y7d4svy86t?key=b98f4496ba00b4cde6a40eb1e7daef50" target="_blank" rel="nofollow" 
-           style="display:inline-block; padding:15px 30px; background:#007bff; color:white; font-size:18px; text-decoration:none; border-radius:8px;">
-           Click Here for More Awesome Content!
-        </a>
-    </div>
-
     <!-- 728x90 Banner Ad -->
     <div style="text-align:center; margin:40px 0;">
         <script>
@@ -56,5 +48,34 @@
     <footer>
         <p>© 2025 MrAwo69. All rights reserved.</p>
     </footer>
+
+    <!-- Full-Page Smartlink Overlay Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!sessionStorage.getItem('smartlinkClicked')) {
+                var overlay = document.createElement('div');
+                overlay.id = 'click-overlay';
+                document.body.appendChild(overlay);
+                document.body.classList.add('overlay-active');
+
+                function triggerSmartlink(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    window.open('https://www.effectivegatecpm.com/y7d4svy86t?key=b98f4496ba00b4cde6a40eb1e7daef50', '_blank');
+
+                    overlay.remove();
+                    document.body.classList.remove('overlay-active');
+                    sessionStorage.setItem('smartlinkClicked', 'true');
+
+                    document.removeEventListener('click', triggerSmartlink);
+                    document.removeEventListener('touchstart', triggerSmartlink);
+                }
+
+                document.addEventListener('click', triggerSmartlink);
+                document.addEventListener('touchstart', triggerSmartlink);
+            }
+        });
+    </script>
 </body>
 </html>
