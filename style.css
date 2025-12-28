@@ -220,3 +220,25 @@ footer a {
     font-size: 1.8rem;
     vertical-align: middle;
 }
+
+/* ==================== FULL-PAGE SMARTLINK OVERLAY ==================== */
+#click-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: transparent;
+    z-index: 9999;
+    cursor: pointer;
+    pointer-events: auto;
+    transition: opacity 0.4s ease;
+}
+
+body.overlay-active {
+    cursor: wait; /* Subtle visual hint on hover (optional) */
+}
+
+#click-overlay:hover {
+    background: rgba(229, 9, 20, 0.05); /* Very subtle red tint on hover – optional feel */
+}
