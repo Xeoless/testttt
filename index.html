@@ -14,7 +14,7 @@
   <div id="loginOverlay" class="login-overlay">
     <div class="login-box">
       <h2>RBLXThumbs</h2>
-      <p>Sign in to create thumbnails</p>
+      <p>Sign in to create Roblox thumbnails</p>
       <input type="text" id="username" placeholder="Username or Email" />
       <input type="password" id="password" placeholder="Password" />
       <button onclick="tryLogin()">Enter</button>
@@ -26,65 +26,56 @@
 
   <!-- Main App -->
   <div id="mainApp" class="hidden">
-    <div class="sidebar">
+    <div class="main-content">
       <div class="logo">
         <div class="icon">✨</div> RBLXThumbs
       </div>
-      <button class="new-chat"><i class="fa-solid fa-plus"></i> New chat</button>
-      <div class="credits">
-        <span class="star">✨</span> Unlimited (Our AI)
-      </div>
-      <div class="user">
-        <div class="avatar">K</div>
-        Kevin Patel
-      </div>
-    </div>
 
-    <div class="main-content">
-      <h1>What thumbnail will you create today?</h1>
-      <p class="subtitle">Describe your Roblox vision — our AI will make it</p>
+      <h1>Create Roblox Fire Thumbnails</h1>
+      <p class="subtitle">Describe your game or upload reference — our AI makes Roblox-style pics</p>
 
       <div class="prompt-area">
-        <textarea id="promptInput" placeholder="e.g. epic obby with lava jumps, excited noob, bold text 'HARDEST OBBY!', Roblox style"></textarea>
+        <textarea id="promptInput" placeholder="e.g. noob running from lava in obby, bold text 'WORLD'S HARDEST OBBY!', neon glow, Roblox style"></textarea>
+
+        <!-- Picture add / upload -->
+        <div class="upload-section">
+          <label for="imageUpload" class="upload-label">
+            <i class="fa-solid fa-image"></i> Add Reference Pic (Roblox screenshot?)
+          </label>
+          <input type="file" id="imageUpload" accept="image/*" hidden />
+          
+          <div id="uploadPreview" class="upload-preview hidden">
+            <img id="previewImg" alt="Your uploaded reference" />
+            <button id="removeImage" class="remove-btn"><i class="fa-solid fa-trash"></i> Remove</button>
+          </div>
+        </div>
+
         <div class="prompt-controls">
           <div class="aspect-toggle">
-            <button class="active" onclick="selectRatio('16:9')">16:9</button>
-            <button onclick="selectRatio('1:1')">1:1</button>
+            <button class="active" onclick="selectRatio('16:9')">16:9 Thumbnail</button>
+            <button onclick="selectRatio('1:1')">1:1 Icon</button>
           </div>
-          <button class="upload-btn"><i class="fa-solid fa-image"></i></button>
           <button class="send-btn" id="generateBtn" onclick="generateThumbnail()">
             <i class="fa-solid fa-arrow-up"></i>
           </button>
         </div>
       </div>
 
-      <!-- Result area -->
+      <!-- Generated result -->
       <div id="imageResult" class="image-result hidden">
-        <h3>Your Generated Thumbnail</h3>
+        <h3>Your Roblox Thumbnail</h3>
         <div id="imageContainer">
-          <div class="placeholder-loading">Generating with our AI... <i class="fa-solid fa-spinner fa-spin"></i></div>
+          <div class="placeholder-loading">Our Roblox AI cooking... <i class="fa-solid fa-spinner fa-spin"></i></div>
         </div>
-        <a id="downloadLink" class="download-btn" style="display:none;">Download Image</a>
+        <a id="downloadLink" class="download-btn" style="display:none;">Download Roblox Pic</a>
       </div>
 
-      <div class="upgrade">
-        <button class="pro-btn">Upgrade to Pro</button>
-      </div>
+      <div class="credits">Unlimited Roblox generations – Our own AI</div>
 
       <div class="history">
-        <h3>Recent Ideas</h3>
+        <h3>Recent Roblox Ideas</h3>
         <div id="historyList"></div>
         <button onclick="clearHistory()">Clear</button>
-      </div>
-    </div>
-
-    <!-- Chat Helper -->
-    <div class="chat-panel">
-      <div class="chat-header">Thumbnail Idea Helper</div>
-      <div id="chatMessages"></div>
-      <div class="chat-input">
-        <input id="chatInput" placeholder="Ask for ideas..." />
-        <button onclick="sendChatMessage()"><i class="fa-solid fa-paper-plane"></i></button>
       </div>
     </div>
   </div>
