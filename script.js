@@ -14,7 +14,7 @@ function tryLogin() {
     document.getElementById("loginOverlay").style.display = "none";
     document.getElementById("mainApp").classList.remove("hidden");
     loadHistory();
-    addBotMessage("Hey Kevin! Describe your Roblox thumbnail idea — I'll generate it with AI! ✨");
+    addBotMessage("Welcome! Our custom AI is ready — describe your thumbnail idea!");
   } else {
     alert("Enter username and password");
   }
@@ -28,34 +28,40 @@ async function generateThumbnail() {
   btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
   btn.disabled = true;
 
-  const fullPrompt = `${prompt}, Roblox game thumbnail, vibrant colors, blocky avatars, exciting action, high detail, ${selectedRatio === '16:9' ? 'widescreen landscape' : 'square format'}`;
+  document.getElementById("imageResult").classList.remove("hidden");
+  document.getElementById("imageContainer").innerHTML = '<div class="placeholder-loading">Our AI is generating... <i class="fa-solid fa-spinner fa-spin"></i></div>';
 
-  try {
-    // Use Puter.js free txt2img (Flux or similar under the hood)
-    const imageElement = await puter.ai.txt2img(fullPrompt);
+  // Simulate your own AI (replace this block later with real fetch to your server)
+  setTimeout(() => {
+    // Fake image URLs for dummy mode (replace with your server endpoint later)
+    const fakeImages = [
+      "https://picsum.photos/800/450?random=1",  // 16:9 style
+      "https://picsum.photos/512/512?random=2",  // 1:1 style
+      "https://picsum.photos/800/450?random=3"
+    ];
+
+    const randomImage = fakeImages[Math.floor(Math.random() * fakeImages.length)];
+
+    const img = document.createElement("img");
+    img.src = randomImage;
+    img.alt = "Generated Roblox Thumbnail";
 
     const container = document.getElementById("imageContainer");
     container.innerHTML = '';
-    container.appendChild(imageElement);
+    container.appendChild(img);
 
-    // Make downloadable
-    const url = imageElement.src;
+    // Download link
     const downloadLink = document.getElementById("downloadLink");
-    downloadLink.href = url;
-    downloadLink.download = "rblxthumbs-generated.png";
+    downloadLink.href = randomImage;
+    downloadLink.download = "rblxthumb-dummy.png";
     downloadLink.style.display = "inline-block";
 
-    document.getElementById("imageResult").classList.remove("hidden");
-
-    // Save to history
     savePrompt(prompt, selectedRatio);
-  } catch (err) {
-    alert("Generation failed: " + (err.message || "Try again later"));
-    console.error(err);
-  } finally {
+    addBotMessage(`Generated: "${prompt}" — check it out!`);
+
     btn.innerHTML = '<i class="fa-solid fa-arrow-up"></i>';
     btn.disabled = false;
-  }
+  }, 2500);  // 2.5 second fake delay (real AI might take 5-30s)
 }
 
 function savePrompt(prompt, ratio) {
@@ -84,7 +90,7 @@ function clearHistory() {
   }
 }
 
-// Chat helper (same as before)
+// Chat helper (dummy)
 function addBotMessage(text) {
   const msg = document.createElement("div");
   msg.className = "message bot";
@@ -106,11 +112,7 @@ function sendChatMessage() {
   input.value = "";
 
   setTimeout(() => {
-    let reply = "Got it! Try generating with: " + text;
-    if (text.toLowerCase().includes("idea")) {
-      reply += "<br>Quick suggestion: Add 'neon glow, dramatic lighting, Roblox avatars'";
-    }
-    addBotMessage(reply);
+    addBotMessage("Good idea! Try adding: 'vibrant Roblox style, blocky characters, epic lighting'");
   }, 800);
 }
 
