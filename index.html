@@ -6,6 +6,9 @@
   <title>RBLXThumbs – Roblox Thumbnail Generator</title>
   <link rel="stylesheet" href="style.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Puter.js for FREE AI image generation (no key needed) -->
+  <script src="https://js.puter.com/v2/"></script>
 </head>
 <body>
 
@@ -18,64 +21,72 @@
       <input type="password" id="password" placeholder="Password" />
       <button onclick="tryLogin()">Enter</button>
       <p class="signup-link">
-        No account? <span onclick="alert('Just type anything and press Enter — fake signup!')">Sign up</span>
+        No account? <span onclick="alert('Fake signup — just proceed!')">Sign up</span>
       </p>
     </div>
   </div>
 
-  <!-- Main app -->
+  <!-- Main App -->
   <div id="mainApp" class="hidden">
-
-    <header>
+    <div class="sidebar">
       <div class="logo">
-        <i class="fa-solid fa-sparkles"></i> RBLXThumbs
+        <div class="icon">✨</div> RBLXThumbs
       </div>
-      <div class="credits">∞ Free Credits</div>
-    </header>
-
-    <div class="app-container">
-      <!-- Left: Generator -->
-      <div class="generator-side">
-        <h1>Create Your Next Viral Thumbnail</h1>
-        <p class="tagline">Describe your Roblox game — get fire results</p>
-
-        <div class="grid">
-          <div class="card">
-            <h3><i class="fa-solid fa-comment-dots"></i> Your Idea</h3>
-            <textarea id="promptInput" placeholder="Example: Huge pet simulator, rainbow neon effects, bold text '1 BILLION VISITS!'..."></textarea>
-          </div>
-
-          <div class="card">
-            <h3><i class="fa-solid fa-image"></i> Format</h3>
-            <div class="ratio-buttons">
-              <button id="btn169" class="ratio-btn active" onclick="selectRatio('16:9')">16:9 Game Thumbnail</button>
-              <button id="btn11"  class="ratio-btn"        onclick="selectRatio('1:1')">1:1 Icon / Gamepass</button>
-            </div>
-          </div>
-        </div>
-
-        <button class="generate-btn" onclick="fakeGenerate()">GENERATE THUMBNAIL 🔥</button>
-
-        <div class="history-section">
-          <h3><i class="fa-solid fa-clock-rotate-left"></i> Recent Prompts</h3>
-          <div id="historyList"></div>
-          <button class="clear-btn" onclick="clearHistory()">Clear History</button>
-        </div>
+      <button class="new-chat"><i class="fa-solid fa-plus"></i> New chat</button>
+      <div class="credits">
+        <span class="star">✨</span> Unlimited (Free via Puter)
       </div>
-
-      <!-- Right: Chat helper -->
-      <div class="chat-side">
-        <div class="chat-header">
-          <i class="fa-solid fa-robot"></i> Thumbnail Idea Helper
-        </div>
-        <div id="chatMessages" class="chat-messages"></div>
-        <div class="chat-input-area">
-          <input type="text" id="chatInput" placeholder="Ask for thumbnail ideas..." />
-          <button onclick="sendChatMessage()"><i class="fa-solid fa-paper-plane"></i></button>
-        </div>
+      <div class="user">
+        <div class="avatar">K</div>
+        Kevin Patel
       </div>
     </div>
 
+    <div class="main-content">
+      <h1>What thumbnail will you create today?</h1>
+      <p class="subtitle">Describe your Roblox vision — AI will generate it!</p>
+
+      <div class="prompt-area">
+        <textarea id="promptInput" placeholder="e.g. epic obby with lava jumps, excited noob, bold text 'HARDEST OBBY!', Roblox style"></textarea>
+        <div class="prompt-controls">
+          <div class="aspect-toggle">
+            <button class="active" onclick="selectRatio('16:9')">16:9</button>
+            <button onclick="selectRatio('1:1')">1:1</button>
+          </div>
+          <button class="upload-btn"><i class="fa-solid fa-image"></i></button>
+          <button class="send-btn" id="generateBtn" onclick="generateThumbnail()">
+            <i class="fa-solid fa-arrow-up"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Generated image will appear here -->
+      <div id="imageResult" class="image-result hidden">
+        <h3>Your Generated Thumbnail</h3>
+        <div id="imageContainer"></div>
+        <a id="downloadLink" class="download-btn" style="display:none;">Download Image</a>
+      </div>
+
+      <div class="upgrade">
+        <button class="pro-btn">Upgrade to Pro</button>
+      </div>
+
+      <div class="history">
+        <h3>Recent Ideas</h3>
+        <div id="historyList"></div>
+        <button onclick="clearHistory()">Clear</button>
+      </div>
+    </div>
+
+    <!-- Chat Helper -->
+    <div class="chat-panel">
+      <div class="chat-header">Thumbnail Idea Helper</div>
+      <div id="chatMessages"></div>
+      <div class="chat-input">
+        <input id="chatInput" placeholder="Ask for ideas..." />
+        <button onclick="sendChatMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+      </div>
+    </div>
   </div>
 
   <script src="script.js"></script>
