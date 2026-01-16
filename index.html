@@ -7,12 +7,10 @@
   <link rel="stylesheet" href="style.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <!-- Puter.js for FREE AI image generation (no key needed) -->
-  <script src="https://js.puter.com/v2/"></script>
 </head>
 <body>
 
-  <!-- Login overlay -->
+  <!-- Login -->
   <div id="loginOverlay" class="login-overlay">
     <div class="login-box">
       <h2>RBLXThumbs</h2>
@@ -34,7 +32,7 @@
       </div>
       <button class="new-chat"><i class="fa-solid fa-plus"></i> New chat</button>
       <div class="credits">
-        <span class="star">✨</span> Unlimited (Free via Puter)
+        <span class="star">✨</span> Unlimited (Our AI)
       </div>
       <div class="user">
         <div class="avatar">K</div>
@@ -44,7 +42,7 @@
 
     <div class="main-content">
       <h1>What thumbnail will you create today?</h1>
-      <p class="subtitle">Describe your Roblox vision — AI will generate it!</p>
+      <p class="subtitle">Describe your Roblox vision — our AI will make it</p>
 
       <div class="prompt-area">
         <textarea id="promptInput" placeholder="e.g. epic obby with lava jumps, excited noob, bold text 'HARDEST OBBY!', Roblox style"></textarea>
@@ -60,10 +58,12 @@
         </div>
       </div>
 
-      <!-- Generated image will appear here -->
+      <!-- Result area -->
       <div id="imageResult" class="image-result hidden">
         <h3>Your Generated Thumbnail</h3>
-        <div id="imageContainer"></div>
+        <div id="imageContainer">
+          <div class="placeholder-loading">Generating with our AI... <i class="fa-solid fa-spinner fa-spin"></i></div>
+        </div>
         <a id="downloadLink" class="download-btn" style="display:none;">Download Image</a>
       </div>
 
