@@ -3,7 +3,7 @@ let selectedRatio = "16:9";
 function selectRatio(ratio) {
   selectedRatio = ratio;
   document.querySelectorAll('.aspect-toggle button').forEach(btn => {
-    btn.classList.toggle('active', btn.textContent.trim() === ratio);
+    btn.classList.toggle('active', btn.textContent.includes(ratio));
   });
 }
 
@@ -14,33 +14,36 @@ function tryLogin() {
     document.getElementById("loginOverlay").style.display = "none";
     document.getElementById("mainApp").classList.remove("hidden");
     loadHistory();
-    addBotMessage("Welcome! Our custom AI is ready — describe your thumbnail idea!");
   } else {
-    alert("Enter username and password");
+    alert("Enter username and password bro");
   }
 }
 
 async function generateThumbnail() {
-  const prompt = document.getElementById("promptInput").value.trim();
-  if (!prompt) return alert("Enter a description first!");
+  let prompt = document.getElementById("promptInput").value.trim();
+  if (!prompt) return alert("Describe your Roblox thumbnail bro!");
+
+  // Auto-boost for Roblox style (makes it feel like "our own AI")
+  prompt = prompt + ", Roblox game thumbnail, blocky avatars, vibrant colors, exciting action, bold text overlay, high detail, cartoon style, game icon aesthetic";
 
   const btn = document.getElementById("generateBtn");
   btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
   btn.disabled = true;
 
   document.getElementById("imageResult").classList.remove("hidden");
-  document.getElementById("imageContainer").innerHTML = '<div class="placeholder-loading">Our AI is generating... <i class="fa-solid fa-spinner fa-spin"></i></div>';
+  document.getElementById("imageContainer").innerHTML = '<div class="placeholder-loading">Our Roblox AI cooking... <i class="fa-solid fa-spinner fa-spin"></i></div>';
 
-  // Simulate your own AI (replace this block later with real fetch to your server)
+  // Simulate generation (fake delay + Roblox-looking placeholders)
   setTimeout(() => {
-    // Fake image URLs for dummy mode (replace with your server endpoint later)
-    const fakeImages = [
-      "https://picsum.photos/800/450?random=1",  // 16:9 style
-      "https://picsum.photos/512/512?random=2",  // 1:1 style
-      "https://picsum.photos/800/450?random=3"
+    // Fake Roblox-style images (replace with your real server later)
+    const robloxFakes = [
+      "https://images.unsplash.com/photo-1617791160505-6f00504e3519?w=800&q=80&txt=Roblox+obby+lava",  // obby example
+      "https://images.unsplash.com/photo-1557683316-973673baf926?w=512&q=80&txt=Roblox+tycoon",     // tycoon
+      "https://images.unsplash.com/photo-1553356084-58ef4a67b2a7?w=800&q=80&txt=Roblox+horror",     // horror
+      "https://picsum.photos/800/450?random=50&grayscale&blur=1"  // random placeholder
     ];
 
-    const randomImage = fakeImages[Math.floor(Math.random() * fakeImages.length)];
+    const randomImage = robloxFakes[Math.floor(Math.random() * robloxFakes.length)];
 
     const img = document.createElement("img");
     img.src = randomImage;
@@ -50,72 +53,37 @@ async function generateThumbnail() {
     container.innerHTML = '';
     container.appendChild(img);
 
-    // Download link
+    // Download
     const downloadLink = document.getElementById("downloadLink");
     downloadLink.href = randomImage;
-    downloadLink.download = "rblxthumb-dummy.png";
+    downloadLink.download = "roblox-thumbnail-bro.png";
     downloadLink.style.display = "inline-block";
 
     savePrompt(prompt, selectedRatio);
-    addBotMessage(`Generated: "${prompt}" — check it out!`);
-
     btn.innerHTML = '<i class="fa-solid fa-arrow-up"></i>';
     btn.disabled = false;
-  }, 2500);  // 2.5 second fake delay (real AI might take 5-30s)
+  }, 2800);  // fake delay to feel like AI
 }
 
-function savePrompt(prompt, ratio) {
-  let history = JSON.parse(localStorage.getItem("rblxthumbs_history") || "[]");
-  history.unshift({ prompt, ratio, time: new Date().toLocaleString() });
-  if (history.length > 12) history.pop();
-  localStorage.setItem("rblxthumbs_history", JSON.stringify(history));
-  loadHistory();
-}
+// Image upload + preview + remove
+document.getElementById("imageUpload").addEventListener("change", function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
 
-function loadHistory() {
-  const container = document.getElementById("historyList");
-  const history = JSON.parse(localStorage.getItem("rblxthumbs_history") || "[]");
-  container.innerHTML = "";
-  history.forEach(item => {
-    const div = document.createElement("div");
-    div.innerHTML = `<small>${item.time} • ${item.ratio}</small><div>${item.prompt}</div>`;
-    container.appendChild(div);
-  });
-}
-
-function clearHistory() {
-  if (confirm("Clear all?")) {
-    localStorage.removeItem("rblxthumbs_history");
-    loadHistory();
-  }
-}
-
-// Chat helper (dummy)
-function addBotMessage(text) {
-  const msg = document.createElement("div");
-  msg.className = "message bot";
-  msg.innerHTML = text;
-  document.getElementById("chatMessages").appendChild(msg);
-  document.getElementById("chatMessages").scrollTop = document.getElementById("chatMessages").scrollHeight;
-}
-
-function sendChatMessage() {
-  const input = document.getElementById("chatInput");
-  const text = input.value.trim();
-  if (!text) return;
-
-  const userMsg = document.createElement("div");
-  userMsg.className = "message user";
-  userMsg.textContent = text;
-  document.getElementById("chatMessages").appendChild(userMsg);
-
-  input.value = "";
-
-  setTimeout(() => {
-    addBotMessage("Good idea! Try adding: 'vibrant Roblox style, blocky characters, epic lighting'");
-  }, 800);
-}
-
-document.getElementById("chatInput")?.addEventListener("keypress", e => {
-  if (e.key === "Enter") sendChatMessage();
+  const reader = new FileReader();
+  reader.onload = function(event) {
+    const preview = document.getElementById("uploadPreview");
+    const img = document.getElementById("previewImg");
+    img.src = event.target.result;
+    preview.classList.remove("hidden");
+  };
+  reader.readAsDataURL(file);
 });
+
+document.getElementById("removeImage").addEventListener("click", function() {
+  document.getElementById("imageUpload").value = "";
+  document.getElementById("uploadPreview").classList.add("hidden");
+  document.getElementById("previewImg").src = "";
+});
+
+// ... keep your savePrompt, loadHistory, clearHistory functions from before ...
