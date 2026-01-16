@@ -2,8 +2,9 @@ let selectedRatio = "16:9";
 
 function selectRatio(ratio) {
   selectedRatio = ratio;
-  document.getElementById("btn169").classList.toggle("active", ratio === "16:9");
-  document.getElementById("btn11").classList.toggle("active", ratio === "1:1");
+  document.querySelectorAll('.aspect-toggle button').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.trim() === ratio);
+  });
 }
 
 function tryLogin() {
@@ -13,20 +14,48 @@ function tryLogin() {
     document.getElementById("loginOverlay").style.display = "none";
     document.getElementById("mainApp").classList.remove("hidden");
     loadHistory();
-    addBotMessage("Hey! Ask me for thumbnail ideas, e.g. 'ideas for obby game' or 'make it scary'");
+    addBotMessage("Hey Kevin! Describe your Roblox thumbnail idea — I'll generate it with AI! ✨");
   } else {
     alert("Enter username and password");
   }
 }
 
-function fakeGenerate() {
+async function generateThumbnail() {
   const prompt = document.getElementById("promptInput").value.trim();
-  if (!prompt) return alert("Write something first!");
+  if (!prompt) return alert("Enter a description first!");
 
-  alert(`[FAKE] Generating ${selectedRatio} thumbnail:\n${prompt}`);
+  const btn = document.getElementById("generateBtn");
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+  btn.disabled = true;
 
-  savePrompt(prompt, selectedRatio);
-  document.getElementById("promptInput").value = "";
+  const fullPrompt = `${prompt}, Roblox game thumbnail, vibrant colors, blocky avatars, exciting action, high detail, ${selectedRatio === '16:9' ? 'widescreen landscape' : 'square format'}`;
+
+  try {
+    // Use Puter.js free txt2img (Flux or similar under the hood)
+    const imageElement = await puter.ai.txt2img(fullPrompt);
+
+    const container = document.getElementById("imageContainer");
+    container.innerHTML = '';
+    container.appendChild(imageElement);
+
+    // Make downloadable
+    const url = imageElement.src;
+    const downloadLink = document.getElementById("downloadLink");
+    downloadLink.href = url;
+    downloadLink.download = "rblxthumbs-generated.png";
+    downloadLink.style.display = "inline-block";
+
+    document.getElementById("imageResult").classList.remove("hidden");
+
+    // Save to history
+    savePrompt(prompt, selectedRatio);
+  } catch (err) {
+    alert("Generation failed: " + (err.message || "Try again later"));
+    console.error(err);
+  } finally {
+    btn.innerHTML = '<i class="fa-solid fa-arrow-up"></i>';
+    btn.disabled = false;
+  }
 }
 
 function savePrompt(prompt, ratio) {
@@ -43,7 +72,6 @@ function loadHistory() {
   container.innerHTML = "";
   history.forEach(item => {
     const div = document.createElement("div");
-    div.className = "item";
     div.innerHTML = `<small>${item.time} • ${item.ratio}</small><div>${item.prompt}</div>`;
     container.appendChild(div);
   });
@@ -56,29 +84,13 @@ function clearHistory() {
   }
 }
 
-// ────────────────────────────────────────────────
-// Chat system
-// ────────────────────────────────────────────────
-
-function addUserMessage(text) {
-  const msg = document.createElement("div");
-  msg.className = "message user";
-  msg.textContent = text;
-  document.getElementById("chatMessages").appendChild(msg);
-  scrollChatToBottom();
-}
-
+// Chat helper (same as before)
 function addBotMessage(text) {
   const msg = document.createElement("div");
   msg.className = "message bot";
-  msg.innerHTML = text; // allow <strong> etc if you want
+  msg.innerHTML = text;
   document.getElementById("chatMessages").appendChild(msg);
-  scrollChatToBottom();
-}
-
-function scrollChatToBottom() {
-  const chat = document.getElementById("chatMessages");
-  chat.scrollTop = chat.scrollHeight;
+  document.getElementById("chatMessages").scrollTop = document.getElementById("chatMessages").scrollHeight;
 }
 
 function sendChatMessage() {
@@ -86,32 +98,22 @@ function sendChatMessage() {
   const text = input.value.trim();
   if (!text) return;
 
-  addUserMessage(text);
+  const userMsg = document.createElement("div");
+  userMsg.className = "message user";
+  userMsg.textContent = text;
+  document.getElementById("chatMessages").appendChild(userMsg);
+
   input.value = "";
 
-  // Simple dummy responses
   setTimeout(() => {
-    let reply = "Hmm... let me think...";
-
-    if (text.toLowerCase().includes("obby") || text.toLowerCase().includes("parkour")) {
-      reply = "For an obby try: <strong>excited noob jumping over lava traps, dramatic angle, big glowing text 'WORLD'S HARDEST OBBY!'</strong> — add some particles and speed lines!";
-    } else if (text.toLowerCase().includes("horror") || text.toLowerCase().includes("scary")) {
-      reply = "Horror vibe? Dark foggy background, creepy red eyes glowing, blood splatter, text like 'DON'T LOOK BEHIND YOU' in dripping font.";
-    } else if (text.toLowerCase().includes("simulator") || text.toLowerCase().includes("pet")) {
-      reply = "Pet sim idea: Giant rainbow pet next to tiny player, explosion of coins/gems, bold text '<strong>NEW HUGE UPDATE!</strong>' with sparkles everywhere.";
-    } else if (text.toLowerCase().includes("idea") || text.toLowerCase().includes("ideas")) {
-      reply = "Quick ideas:<br>1. Tycoon with golden towers<br>2. Simulator with massive pets<br>3. Battle royale with explosions<br>What style do you like?";
-    } else {
-      reply = "Cool! Try something like: <strong>epic action pose, vibrant colors, bold game title, Roblox avatars everywhere</strong>. Want me to make it more specific?";
+    let reply = "Got it! Try generating with: " + text;
+    if (text.toLowerCase().includes("idea")) {
+      reply += "<br>Quick suggestion: Add 'neon glow, dramatic lighting, Roblox avatars'";
     }
-
     addBotMessage(reply);
   }, 800);
 }
 
-// Enter key to send chat
-document.getElementById("chatInput")?.addEventListener("keypress", function(e) {
-  if (e.key === "Enter") {
-    sendChatMessage();
-  }
+document.getElementById("chatInput")?.addEventListener("keypress", e => {
+  if (e.key === "Enter") sendChatMessage();
 });
